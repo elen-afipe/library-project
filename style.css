@@ -1,0 +1,9 @@
+.books-container{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.book-card{
+    border: 5px solid black;
+    padding: 15px;
+}
