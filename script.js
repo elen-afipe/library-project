@@ -59,58 +59,64 @@ function displayLibrary(){
 
 displayLibrary();
 
+createFormHTML = () => {
+     const dialog = document.createElement("dialog");
+     dialog.classList.add("dialog");
+     document.body.appendChild(dialog);
+ 
+     const dialogCloseBtn = document.createElement("img");
+     dialogCloseBtn.classList.add("close-dialog");
+     dialogCloseBtn.classList.add("btn");
+     dialogCloseBtn.src="./icons/cancel.svg";
+     dialog.appendChild(dialogCloseBtn);
+     
+     const form = document.createElement("form");
+     dialog.classList.add("form");
+     dialog.appendChild(form);
+ 
+     const titleRow = document.createElement("div");
+     titleRow.classList.add("form-row");
+     form.appendChild(titleRow);
+ 
+     const titleLabel = document.createElement("label");
+     titleLabel.for="album-title";
+     titleLabel.textContent = "Title: ";
+     titleRow.appendChild(titleLabel);
+ 
+     const title = document.createElement("input");
+     title.id = "album-title";
+     title.name = "album-title";
+     title.type = "text";
+     title.required = true;
+     titleRow.appendChild(title);
+ 
+     const authorRow = document.createElement("div");
+     authorRow.classList.add("form-row");
+     form.appendChild(authorRow);
+ 
+     const authorLabel = document.createElement("label");
+     authorLabel.for="album-author";
+     authorLabel.textContent = "Author: ";
+     authorRow.appendChild(authorLabel);
+ 
+     const author = document.createElement("input");
+     author.id = "album-author";
+     author.name = "album-author";
+     author.type = "album-author";
+     author.required = true;
+     authorRow.appendChild(author);
+}
+
 document.querySelector(".add-album").addEventListener("click", () => {
 
     // create dialog elements
-    const dialog = document.createElement("dialog");
-    dialog.classList.add("dialog");
-    document.body.appendChild(dialog);
+    createFormHTML();
 
-    const dialogCloseBtn = document.createElement("img");
-    dialogCloseBtn.classList.add("close-dialog");
-    dialogCloseBtn.classList.add("btn");
-    dialogCloseBtn.src="./icons/cancel.svg";
-    dialog.appendChild(dialogCloseBtn);
-    
-    const form = document.createElement("form");
-    dialog.classList.add("form");
-    dialog.appendChild(form);
-
-    const titleRow = document.createElement("div");
-    titleRow.classList.add("form-row");
-    form.appendChild(titleRow);
-
-    const titleLabel = document.createElement("label");
-    titleLabel.for="album-title";
-    titleLabel.textContent = "Title: ";
-    titleRow.appendChild(titleLabel);
-
-    const title = document.createElement("input");
-    title.id = "album-title";
-    title.name = "album-title";
-    title.type = "text";
-    title.required = true;
-    titleRow.appendChild(title);
-
-    const authorRow = document.createElement("div");
-    authorRow.classList.add("form-row");
-    form.appendChild(authorRow);
-
-    const authorLabel = document.createElement("label");
-    authorLabel.for="album-author";
-    authorLabel.textContent = "Author: ";
-    authorRow.appendChild(authorLabel);
-
-    const author = document.createElement("input");
-    author.id = "album-author";
-    author.name = "album-author";
-    author.type = "album-author";
-    author.required = true;
-    authorRow.appendChild(author);
-
+    const dialog = document.querySelector(".dialog");
     // show dialog
     dialog.showModal();
 
+    const dialogCloseBtn = document.querySelector(".close-dialog");
     // "Close" button closes the dialog
     dialogCloseBtn.addEventListener("click", () => {
     dialog.close();
