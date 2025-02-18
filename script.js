@@ -1,11 +1,11 @@
 const myLibrary = [];
 
 function getRatingStars(rating, haveListened){
-
     if (rating >= 1 && rating <= 5 && haveListened === "✓") {
         return ('★'.repeat(rating));
     } else return "";
 }
+
 function Album(title, author, year, haveListened, rating, comment) {
     this.title = title;
     this.author = author;
@@ -19,7 +19,6 @@ function addAlbumToLibrary(title, author, year, haveListened, rating, comment) {
   const myAlbum = new Album(title, author, year, haveListened, rating, comment);
   myLibrary.push(myAlbum);
 }
-
 
 addAlbumToLibrary('A', 'B', 365, false, 5, "liked");
 addAlbumToLibrary('C', 'tttt', 349, true, "★★★★★", "liked");
@@ -65,6 +64,16 @@ function displayLibrary(){
 
 displayLibrary();
 
+function sendFormData () {
+    const title = document.querySelector("#album-title");
+    const author = document.querySelector("#album-author");
+    const year = document.querySelector("#album-year");
+    const haveListened = document.querySelector(".listen-icon");
+    const rating = document.querySelector('input[name="star-rating"]:checked');
+    const comment = document.querySelector("#album-comment");
+    addAlbumToLibrary(title.value, author.value, year.value, haveListened.textContent, rating.value, comment.value);
+}
+
 document.querySelector(".add-album").addEventListener("click", () => {
     const dialog = document.querySelector(".dialog");
     // show dialog
@@ -80,15 +89,12 @@ document.querySelector(".add-album").addEventListener("click", () => {
     const sendForm = document.querySelector(".send-form");
 
     sendForm.addEventListener("click", (event) => {
-        event.preventDefault();
-        const title = document.querySelector("#album-title");
-        const author = document.querySelector("#album-author");
-        const year = document.querySelector("#album-year");
-        const haveListened = document.querySelector(".listen-icon");
-        const rating = document.querySelector('input[name="star-rating"]:checked');
-        const comment = document.querySelector("#album-comment");
-        console.log(title.value, author.value, year.value, haveListened.textContent, rating.value, comment.value)
-        addAlbumToLibrary(title.value, author.value, year.value, haveListened.textContent, rating.value, comment.value);
+    event.preventDefault();
+    sendFormData();
+    const form = document.querySelector(".form");
+    form.reset();
+    const haveListened = document.querySelector(".listen-icon");
+    haveListened.textContent="✕";
     dialog.close();
     displayLibrary();
     });
