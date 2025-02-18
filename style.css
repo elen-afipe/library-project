@@ -37,3 +37,53 @@ form{
     gap: 10px;
     align-items: baseline;
 }
+
+.listen-icon:hover, .listen-icon:focus{
+    cursor: pointer;
+}
+
+/* rating */
+.rating-box {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 10px;
+}
+.rating-box input {
+    display: none;
+    }
+
+.rating-box label {
+    position:relative;
+    display: inline-block;
+    color: #888;
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    cursor: pointer;
+    }
+
+.rating-box label:before {
+        content:"★";
+        position:absolute;
+        top: 50%;
+        left:50%;
+        transform: translate(-50%, -50%);
+        color:inherit;
+        font-size:1.85em;
+        cursor: pointer;
+        line-height:40px;
+}
+
+.rating-box label:after {
+    content:"";
+    position:absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    width:40px;
+    height:40px;
+    display: inline-block;
+    border-radius: 50%;
+    z-index: 1;
+}
+

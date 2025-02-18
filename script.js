@@ -15,6 +15,7 @@ function addAlbumToLibrary(title, author, year, haveListened, rating, comment) {
   myLibrary.push(myAlbum);
 }
 
+
 addAlbumToLibrary('A', 'B', 365, false, 5, "liked");
 addAlbumToLibrary('C', 'tttt', 349, true, "★★★★★", "liked");
 
@@ -59,59 +60,7 @@ function displayLibrary(){
 
 displayLibrary();
 
-createFormHTML = () => {
-     const dialog = document.createElement("dialog");
-     dialog.classList.add("dialog");
-     document.body.appendChild(dialog);
- 
-     const dialogCloseBtn = document.createElement("img");
-     dialogCloseBtn.classList.add("close-dialog");
-     dialogCloseBtn.classList.add("btn");
-     dialogCloseBtn.src="./icons/cancel.svg";
-     dialog.appendChild(dialogCloseBtn);
-     
-     const form = document.createElement("form");
-     dialog.classList.add("form");
-     dialog.appendChild(form);
- 
-     const titleRow = document.createElement("div");
-     titleRow.classList.add("form-row");
-     form.appendChild(titleRow);
- 
-     const titleLabel = document.createElement("label");
-     titleLabel.for="album-title";
-     titleLabel.textContent = "Title: ";
-     titleRow.appendChild(titleLabel);
- 
-     const title = document.createElement("input");
-     title.id = "album-title";
-     title.name = "album-title";
-     title.type = "text";
-     title.required = true;
-     titleRow.appendChild(title);
- 
-     const authorRow = document.createElement("div");
-     authorRow.classList.add("form-row");
-     form.appendChild(authorRow);
- 
-     const authorLabel = document.createElement("label");
-     authorLabel.for="album-author";
-     authorLabel.textContent = "Author: ";
-     authorRow.appendChild(authorLabel);
- 
-     const author = document.createElement("input");
-     author.id = "album-author";
-     author.name = "album-author";
-     author.type = "album-author";
-     author.required = true;
-     authorRow.appendChild(author);
-}
-
 document.querySelector(".add-album").addEventListener("click", () => {
-
-    // create dialog elements
-    createFormHTML();
-
     const dialog = document.querySelector(".dialog");
     // show dialog
     dialog.showModal();
@@ -122,3 +71,41 @@ document.querySelector(".add-album").addEventListener("click", () => {
     dialog.close();
     });
 })
+// max year of album in form
+document.addEventListener("DOMContentLoaded", () => {
+    const currentYear = new Date().getFullYear();
+    const albumYearInput = document.getElementById("album-year");
+    albumYearInput.setAttribute("max", currentYear);
+});
+// listen status in form
+document.querySelector(".listen-icon").addEventListener("click", (event) => {
+    const status = event.target;
+    if(status.classList.contains("false")){
+    status.textContent = "✓";
+    status.classList.remove("false");
+    }
+    else {
+        status.textContent = "✕";
+        status.classList.add("false");
+    }
+})
+// rating in form
+function enableRating(inputBox){
+    const labels =[...inputBox.querySelectorAll("label")];
+    const inputs =[...inputBox.querySelectorAll("input")]
+
+
+        labels.forEach((e, index) => e.addEventListener("mouseover", (e)=>{
+         for(let i=0;i<labels.length;i++){
+            labels[i].style.color = ((i <= index) ? "#391854" : "#888");
+        }
+     }));
+
+        labels.forEach((e, index) => e.addEventListener("mouseleave", (e)=>{
+            const checkedIndex = inputs.findIndex(e => e.checked);
+            for(let i=0;i<labels.length;i++){
+                labels[i].style.color = ((i <= checkedIndex) ? "#391854" : "#888");
+            };
+    }));
+}
+    enableRating(document.querySelector(".rating-box"));
