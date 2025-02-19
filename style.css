@@ -6,6 +6,7 @@
 .album-card{
     border: 5px solid black;
     padding: 15px;
+    width: 200px;
 }
 .btn{
     height: 50px;
@@ -17,7 +18,10 @@
 .btn:active{
     transform: translateY(-1px);
 }
-
+.delete-album {
+    height: 10px;
+    justify-self: right;
+    }
 ::backdrop {
     background-image: linear-gradient(
       45deg,

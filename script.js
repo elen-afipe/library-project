@@ -26,11 +26,22 @@ function addAlbumToLibrary(title, author, year, haveListened, rating, comment) {
   const myAlbum = new Album(title, author, year, haveListened, rating, comment);
   myLibrary.push(myAlbum);
 }
+function deleteAlbumFromLibrary(e){
+    console.log(e.target.parentNode)
+    const card = e.target.parentNode;
+    card.remove();
+}
 
 function createAlbumCard(album, albumsContainer){
     const albumCard = document.createElement("div");
     albumCard.classList.add("album-card");
     
+    const deleteAlbumBtn = document.createElement("div");
+    deleteAlbumBtn.classList.add("delete-album");
+    deleteAlbumBtn.classList.add("btn");
+    deleteAlbumBtn.textContent ='✕';
+    deleteAlbumBtn.onclick = deleteAlbumFromLibrary;
+
     const albumCredits = document.createElement("h2");
     albumCredits.classList.add("album-title");
     albumCredits.textContent = `"${album.title}" by ${album.author}`;
@@ -48,12 +59,12 @@ function createAlbumCard(album, albumsContainer){
     listenStatusSpan.textContent = album.haveListened;
     listenStatusSpan.onclick = toggleListenedStatus;
 
+    albumCard.appendChild(deleteAlbumBtn);
     albumCard.appendChild(albumCredits);
     albumCard.appendChild(year);
     listenStatus.appendChild(listenStatusSpan);
     albumCard.appendChild(listenStatus);
     
-
     if(album.rating !== ""){
     const rating = document.createElement("p");
     rating.classList.add("album-rating");
@@ -70,8 +81,8 @@ function createAlbumCard(album, albumsContainer){
     albumsContainer.appendChild(albumCard);
 }
 
-addAlbumToLibrary('A', 'B', 365, false, 5, "liked");
-addAlbumToLibrary('C', 'tttt', 349, true, "★★★★★", "liked");
+addAlbumToLibrary('...At This', 'Arc', 1971, "✓", 5, "Cool riffs");
+addAlbumToLibrary('The Road', 'Quiet World', 1970, "✕");
 
 function displayLibrary(){
     const albumsContainer = document.querySelector(".albums-container");
@@ -160,3 +171,4 @@ function enableRating(inputBox){
     }));
 }
     enableRating(document.querySelector(".rating-box"));
+
