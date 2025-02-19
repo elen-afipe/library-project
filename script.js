@@ -26,6 +26,7 @@ function addAlbumToLibrary(title, author, year, haveListened, rating, comment) {
   const myAlbum = new Album(title, author, year, haveListened, rating, comment);
   myLibrary.push(myAlbum);
 }
+
 function deleteAlbumFromLibrary(e){
     console.log(e.target.parentNode)
     const card = e.target.parentNode;
@@ -33,6 +34,8 @@ function deleteAlbumFromLibrary(e){
 }
 
 function createAlbumCard(album, albumsContainer){
+    console.log(`album ${album}`)
+    console.log(`album container ${albumsContainer}`)
     const albumCard = document.createElement("div");
     albumCard.classList.add("album-card");
     
@@ -64,7 +67,6 @@ function createAlbumCard(album, albumsContainer){
     albumCard.appendChild(year);
     listenStatus.appendChild(listenStatusSpan);
     albumCard.appendChild(listenStatus);
-    
     if(album.rating !== ""){
     const rating = document.createElement("p");
     rating.classList.add("album-rating");
@@ -79,12 +81,15 @@ function createAlbumCard(album, albumsContainer){
     }
     
     albumsContainer.appendChild(albumCard);
+    console.log(myLibrary)
+    console.log("append")
 }
 
 addAlbumToLibrary('...At This', 'Arc', 1971, "✓", 5, "Cool riffs");
 addAlbumToLibrary('The Road', 'Quiet World', 1970, "✕");
 
 function displayLibrary(){
+    // console.log(myLibrary);
     const albumsContainer = document.querySelector(".albums-container");
     myLibrary.forEach(album =>{ 
         if(album.dataDisplayed === false){
@@ -102,36 +107,51 @@ function sendFormData () {
     const year = document.querySelector("#album-year");
     const haveListened = document.querySelector(".listen-icon");
     const rating = document.querySelector('input[name="star-rating"]:checked');
+    const ratingValue = rating ? rating.value : "";
     const comment = document.querySelector("#album-comment");
-    addAlbumToLibrary(title.value, author.value, year.value, haveListened.textContent, rating.value, comment.value);
-    console.log(title.value, author.value, year.value, haveListened.textContent, rating.value, comment.value);
+    addAlbumToLibrary(title.value, author.value, year.value, haveListened.textContent, ratingValue, comment.value);
+    console.log(title.value, author.value, year.value, haveListened.textContent, ratingValue, comment.value);
 }
 
+const dialog = document.querySelector(".dialog");
+const sendForm = document.querySelector(".send-form");
+
 document.querySelector(".add-album").addEventListener("click", () => {
-    const dialog = document.querySelector(".dialog");
     // show dialog
     dialog.showModal();
-
-    const dialogCloseBtn = document.querySelector(".close-dialog");
     // "Close" button closes the dialog
+    const dialogCloseBtn = document.querySelector(".close-dialog");
     dialogCloseBtn.addEventListener("click", () => {
-    dialog.close();
+        dialog.close();
+        const form = document.querySelector(".form");
+        form.reset();
+        listenStatusReset();
     });
+    
+})
 
-    // save data when user clicks sendForm button
-    const sendForm = document.querySelector(".send-form");
-
-    sendForm.addEventListener("click", (event) => {
+// send form data when form submit button clicked
+sendForm.addEventListener("click", (event) => {
     event.preventDefault();
+
     sendFormData();
+
+    // reset form
     const form = document.querySelector(".form");
     form.reset();
-    const haveListened = document.querySelector(".listen-icon");
-    haveListened.textContent="✕";
+    listenStatusReset();
+
     dialog.close();
     displayLibrary();
-    });
-})
+});
+
+
+// listened reset for form
+function listenStatusReset(){
+const haveListened = document.querySelector(".listen-icon");
+haveListened.textContent="✕";
+}
+
 
 // max year of album in form
 document.addEventListener("DOMContentLoaded", () => {
