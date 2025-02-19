@@ -13,6 +13,7 @@ function Album(title, author, year, haveListened, rating, comment) {
     this.haveListened = (haveListened === "✕") ? "✕" : "✓";
     this.rating = getRatingStars(rating, haveListened);
     this.comment = (haveListened === "✕") ? "" : comment;
+    this.dataDisplayed = false;
 }
 
 function addAlbumToLibrary(title, author, year, haveListened, rating, comment) {
@@ -20,12 +21,7 @@ function addAlbumToLibrary(title, author, year, haveListened, rating, comment) {
   myLibrary.push(myAlbum);
 }
 
-addAlbumToLibrary('A', 'B', 365, false, 5, "liked");
-addAlbumToLibrary('C', 'tttt', 349, true, "★★★★★", "liked");
-
-function displayLibrary(){
-    const albumsContainer = document.querySelector(".albums-container");
-    myLibrary.forEach(album =>{
+function createAlbumCard(album, albumsContainer){
     const albumCard = document.createElement("div");
     albumCard.classList.add("album-card");
     
@@ -59,6 +55,18 @@ function displayLibrary(){
     }
     
     albumsContainer.appendChild(albumCard);
+}
+
+addAlbumToLibrary('A', 'B', 365, false, 5, "liked");
+addAlbumToLibrary('C', 'tttt', 349, true, "★★★★★", "liked");
+
+function displayLibrary(){
+    const albumsContainer = document.querySelector(".albums-container");
+    myLibrary.forEach(album =>{ 
+        if(album.dataDisplayed === false){
+        createAlbumCard(album, albumsContainer);
+        album.dataDisplayed = true;
+        } else {return}
 });
 }
 
@@ -72,6 +80,7 @@ function sendFormData () {
     const rating = document.querySelector('input[name="star-rating"]:checked');
     const comment = document.querySelector("#album-comment");
     addAlbumToLibrary(title.value, author.value, year.value, haveListened.textContent, rating.value, comment.value);
+    console.log(title.value, author.value, year.value, haveListened.textContent, rating.value, comment.value);
 }
 
 document.querySelector(".add-album").addEventListener("click", () => {
