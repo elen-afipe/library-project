@@ -5,6 +5,12 @@ function getRatingStars(rating, haveListened){
         return ('★'.repeat(rating));
     } else return "";
 }
+function toggleListenedStatus(e){
+   const status = e.target;
+    if (status.textContent==="✕"){
+        status.textContent="✓"
+    }else{status.textContent="✕"}
+}
 
 function Album(title, author, year, haveListened, rating, comment) {
     this.title = title;
@@ -35,11 +41,18 @@ function createAlbumCard(album, albumsContainer){
 
     const listenStatus = document.createElement("p");
     listenStatus.classList.add("listen-status");
-    listenStatus.textContent = `Listened: ${album.haveListened}`;
+    listenStatus.textContent = `Listened: `;
+
+    const listenStatusSpan = document.createElement("span");
+    listenStatusSpan.classList.add("listen-status-span");
+    listenStatusSpan.textContent = album.haveListened;
+    listenStatusSpan.onclick = toggleListenedStatus;
 
     albumCard.appendChild(albumCredits);
     albumCard.appendChild(year);
+    listenStatus.appendChild(listenStatusSpan);
     albumCard.appendChild(listenStatus);
+    
 
     if(album.rating !== ""){
     const rating = document.createElement("p");

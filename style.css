@@ -38,7 +38,7 @@ form{
     align-items: baseline;
 }
 
-.listen-icon:hover, .listen-icon:focus{
+.listen-icon:hover, .listen-icon:focus, .listen-status-span{
     cursor: pointer;
 }
 
