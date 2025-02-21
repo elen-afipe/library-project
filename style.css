@@ -10,6 +10,7 @@
 }
 .btn{
     height: 50px;
+    outline: none;
 }
 .btn:hover{
     cursor: pointer;
@@ -89,5 +90,11 @@ form{
     display: inline-block;
     border-radius: 50%;
     z-index: 1;
+}
+dialog{
+    padding: 0;
+}
+.dialog-content{
+    padding: 10px;
 }
 

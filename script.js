@@ -1,29 +1,36 @@
 const myLibrary = [];
 
+    const symbols = {
+        cross: "✕",
+        tick: "✓",
+        star: '★',
+    }
 function getRatingStars(rating, haveListened){
-    if (rating >= 1 && rating <= 5 && haveListened === "✓") {
-        return ('★'.repeat(rating));
+    if (rating >= 1 && rating <= 5) {
+        return (symbols.star.repeat(rating));
     } else return "";
 }
 function toggleListenedStatus(e){
    const status = e.target;
-    if (status.textContent==="✕"){
-        status.textContent="✓"
-    }else{status.textContent="✕"}
+    if (status.textContent===symbols.cross){
+        status.textContent= symbols.tick
+    }else{status.textContent=symbols.cross}
 }
 
 function Album(title, author, year, haveListened, rating, comment) {
     this.title = title;
     this.author = author;
     this.year = year;
-    this.haveListened = (haveListened === "✕") ? "✕" : "✓";
+    this.haveListened = (haveListened === symbols.cross) ? symbols.cross : symbols.tick;
+    this.ratingNumber = (rating !== "") ? rating : false;
     this.rating = getRatingStars(rating, haveListened);
-    this.comment = (haveListened === "✕") ? "" : comment;
+    this.comment = comment;
     this.dataDisplayed = false;
 }
 
 function addAlbumToLibrary(title, author, year, haveListened, rating, comment) {
   const myAlbum = new Album(title, author, year, haveListened, rating, comment);
+  console.log(myAlbum);
   myLibrary.push(myAlbum);
 }
 
@@ -42,7 +49,8 @@ function createAlbumCard(album, albumsContainer){
     const deleteAlbumBtn = document.createElement("div");
     deleteAlbumBtn.classList.add("delete-album");
     deleteAlbumBtn.classList.add("btn");
-    deleteAlbumBtn.textContent ='✕';
+    deleteAlbumBtn.tabIndex = 0;
+    deleteAlbumBtn.textContent = symbols.cross;
     deleteAlbumBtn.onclick = deleteAlbumFromLibrary;
 
     const albumCredits = document.createElement("h2");
@@ -85,8 +93,8 @@ function createAlbumCard(album, albumsContainer){
     console.log("append")
 }
 
-addAlbumToLibrary('...At This', 'Arc', 1971, "✓", 5, "Cool riffs");
-addAlbumToLibrary('The Road', 'Quiet World', 1970, "✕");
+addAlbumToLibrary('...At This', 'Arc', 1971, symbols.tick, 5, "Cool riffs");
+addAlbumToLibrary('The Road', 'Quiet World', 1970, symbols.cross);
 
 function displayLibrary(){
     // console.log(myLibrary);
@@ -130,6 +138,12 @@ document.querySelector(".add-album").addEventListener("click", () => {
     
 })
 
+// close dialog on blur
+dialog.addEventListener('click', () => dialog.close());
+
+const dialogContent = document.querySelector('.dialog-content');
+dialogContent.addEventListener('click', (event) => event.stopPropagation());
+
 // send form data when form submit button clicked
 sendForm.addEventListener("click", (event) => {
     event.preventDefault();
@@ -149,7 +163,7 @@ sendForm.addEventListener("click", (event) => {
 // listened reset for form
 function listenStatusReset(){
 const haveListened = document.querySelector(".listen-icon");
-haveListened.textContent="✕";
+haveListened.textContent= symbols.cross;
 }
 
 
@@ -163,11 +177,11 @@ document.addEventListener("DOMContentLoaded", () => {
 document.querySelector(".listen-icon").addEventListener("click", (event) => {
     const status = event.target;
     if(status.classList.contains("false")){
-    status.textContent = "✓";
+    status.textContent = symbols.tick;
     status.classList.remove("false");
     }
     else {
-        status.textContent = "✕";
+        status.textContent = symbols.cross;
         status.classList.add("false");
     }
 })
