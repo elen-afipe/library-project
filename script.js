@@ -34,10 +34,25 @@ function addAlbumToLibrary(title, author, year, haveListened, rating, comment) {
   myLibrary.push(myAlbum);
 }
 
+function getAlbumIndex(card){
+    const title = card.dataset.title;
+    const author = card.dataset.author;
+    const year = parseInt(card.dataset.year); 
+
+    return myLibrary.findIndex(album => 
+        album.title === title &&
+        album.author === author &&
+        album.year === year
+      );
+}
+
 function deleteAlbumFromLibrary(e){
     console.log(e.target.parentNode)
     const card = e.target.parentNode;
     card.remove();
+    const cardIndex = getAlbumIndex(card);
+    myLibrary.splice(cardIndex, 1);
+    console.log(myLibrary)
 }
 
 function createAlbumCard(album, albumsContainer){
@@ -75,19 +90,22 @@ function createAlbumCard(album, albumsContainer){
     albumCard.appendChild(year);
     listenStatus.appendChild(listenStatusSpan);
     albumCard.appendChild(listenStatus);
-    if(album.rating !== ""){
+
     const rating = document.createElement("p");
     rating.classList.add("album-rating");
     rating.textContent = `${album.rating}`;
     albumCard.appendChild(rating);
-    }
-    if(album.comment !== ""){
+
     const comment = document.createElement("p");
     comment.classList.add("album-comment");
     comment.textContent = `${album.comment}`;
     albumCard.appendChild(comment);
-    }
     
+    // set meta for deletion and search
+    albumCard.dataset.title = album.title;
+    albumCard.dataset.author = album.author;
+    albumCard.dataset.year = album.year;
+
     albumsContainer.appendChild(albumCard);
     console.log(myLibrary)
     console.log("append")
@@ -205,4 +223,5 @@ function enableRating(inputBox){
     }));
 }
     enableRating(document.querySelector(".rating-box"));
+
 
