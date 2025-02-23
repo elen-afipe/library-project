@@ -237,6 +237,11 @@ function createAlbumCard(album, albumsContainer){
 addAlbumToLibrary('...At This', 'Arc', 1971, symbols.tick, 5, "Cool riffs");
 addAlbumToLibrary('The Road', 'Quiet World', 1970, symbols.cross, "", "Tried, but wanna listen fully");
 
+addAlbumToLibrary('Exile on Main St.', 'The Rolling Stones', 1972, symbols.tick, 5, 'Classic');
+addAlbumToLibrary('Sticky Fingers', 'The Rolling Stones', 1971, symbols.tick, 5, 'Absolute banger');
+addAlbumToLibrary('Goats Head Soup', 'The Rolling Stones', 1973, symbols.cross, 5, 'Can listen to it forever');
+
+
 function displayLibrary(){
     // console.log(myLibrary);
     const albumsContainer = document.querySelector(".albums-container");
@@ -348,4 +353,48 @@ function enableRating(inputBox){
 }
     enableRating(document.querySelector(".rating-box"));
 
+    function updateFilteredLibrary(){
+            const albumsContainer = document.querySelector(".albums-container");
+            albumsContainer.innerHTML = '';
+            myLibrary.forEach(album =>{ 
+                createAlbumCard(album, albumsContainer);
+        });
+        
+    }
+    function sortLibrary(criteria) {
+        switch (criteria) {
+            case 'author-asc':
+                myLibrary.sort((a, b) => a.author.localeCompare(b.author));
+                break;
+            case 'author-desc':
+                myLibrary.sort((a, b) => b.author.localeCompare(a.author));
+                break;
+            case 'year-asc':
+                myLibrary.sort((a, b) => b.year - a.year);  
+                break;
+            case 'year-desc':
+                myLibrary.sort((a, b) => a.year - b.year);  
+                break;
+            case 'listen-asc':
+                myLibrary.sort((a, b) => (b.haveListened === '✓' ? 1 : 0) - (a.haveListened === '✓' ? 1 : 0)); 
+                break;
+            case 'listen-desc':
+                myLibrary.sort((a, b) => (a.haveListened === '✓' ? 1 : 0) - (b.haveListened === '✓' ? 1 : 0));  // Not listened first
+                break;
+        }
+        updateFilteredLibrary();
+    }
+    document.querySelector('select[name="author-selection"]').addEventListener('change', (e) => {
+        const selectedValue = e.target.value;
+        sortLibrary(selectedValue);
+    });
+    document.querySelector('select[name="listen-selection"]').addEventListener('change', (e) => {
+        const selectedValue = e.target.value;
+        sortLibrary(selectedValue);
+    });
+    document.querySelector('select[name="year-selection"]').addEventListener('change', (e) => {
+        const selectedValue = e.target.value;
+        sortLibrary(selectedValue);
+    });
 
+// add input check
