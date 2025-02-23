@@ -1,20 +1,36 @@
 const myLibrary = [];
+let cardMode = "add";
 
     const symbols = {
         cross: "✕",
         tick: "✓",
         star: '★',
+        blankStar:"☆",
     }
-function getRatingStars(rating, haveListened){
+function getRatingStars(rating){
     if (rating >= 1 && rating <= 5) {
         return (symbols.star.repeat(rating));
-    } else return "";
+    } else return symbols.blankStar.repeat(5);
 }
 function toggleListenedStatus(e){
    const status = e.target;
+   const div = e.target.parentNode;
+   const card = div.parentNode;
+    // update card textContent and meta (dataset.listenedStatus) 
     if (status.textContent===symbols.cross){
-        status.textContent= symbols.tick
-    }else{status.textContent=symbols.cross}
+        status.textContent= symbols.tick;
+        card.dataset.listenedStatus = symbols.tick;
+    }else{
+        status.textContent=symbols.cross;
+        card.dataset.listenedStatus = symbols.cross;
+    }
+
+}
+
+let currentId = 0;
+function generateAlbumId(){
+    currentId+=1;
+    return currentId;
 }
 
 function Album(title, author, year, haveListened, rating, comment) {
@@ -23,9 +39,10 @@ function Album(title, author, year, haveListened, rating, comment) {
     this.year = year;
     this.haveListened = (haveListened === symbols.cross) ? symbols.cross : symbols.tick;
     this.ratingNumber = (rating !== "") ? rating : false;
-    this.rating = getRatingStars(rating, haveListened);
+    this.rating = getRatingStars(rating);
     this.comment = comment;
     this.dataDisplayed = false;
+    this.id = generateAlbumId();
 }
 
 function addAlbumToLibrary(title, author, year, haveListened, rating, comment) {
@@ -35,24 +52,110 @@ function addAlbumToLibrary(title, author, year, haveListened, rating, comment) {
 }
 
 function getAlbumIndex(card){
-    const title = card.dataset.title;
-    const author = card.dataset.author;
-    const year = parseInt(card.dataset.year); 
-
+    const id = parseInt(card.dataset.id);
     return myLibrary.findIndex(album => 
-        album.title === title &&
-        album.author === author &&
-        album.year === year
+        album.id === id
       );
 }
 
 function deleteAlbumFromLibrary(e){
-    console.log(e.target.parentNode)
     const card = e.target.parentNode;
     card.remove();
     const cardIndex = getAlbumIndex(card);
     myLibrary.splice(cardIndex, 1);
     console.log(myLibrary)
+}
+
+function setRatingForEdit(value) {
+    const star = document.querySelector(`input[name="star-rating"][value="${value}"]`);
+    if (star) {
+      star.checked = true;
+    }
+  }
+
+
+  function preloadInputs(e){
+    // card and according library album
+    const card = e.target.parentNode;
+    const cardIndex = getAlbumIndex(card);
+    const libraryAlbum = myLibrary[cardIndex];
+    
+    // saved album meta from library
+    const title = libraryAlbum.title;
+    const author = libraryAlbum.author;
+    const year = libraryAlbum.year;
+    const ratingNumber = libraryAlbum.ratingNumber;
+    const comment = libraryAlbum.comment;
+
+    // inputs
+    const albumInput = document.querySelector("#album-title");
+    const authorInput = document.querySelector("#album-author");
+    const yearInput = document.querySelector("#album-year");
+    const listenedStatusInput = document.querySelector(".listen-icon");
+
+    const commentInput = document.querySelector("#album-comment");
+    
+    // send meta to inputs in form so they can be edited
+    albumInput.value = title;
+    authorInput.value = author;
+    yearInput.value = year;
+    listenedStatusInput.textContent = card.dataset.listenedStatus;
+    setRatingForEdit(ratingNumber); 
+    commentInput.value = comment;
+  }
+
+  function editAlbumInLibrary(cardAsTarget, title, author, year, haveListened, rating, comment){
+    const card = cardAsTarget;
+    // look for card in Library array
+    const cardIndex = getAlbumIndex(card);
+    const libraryAlbum = myLibrary[cardIndex];
+    // update card info in lib
+    libraryAlbum.title = title;
+    libraryAlbum.author = author;
+    libraryAlbum.year = year;
+    libraryAlbum.haveListened = haveListened;
+    libraryAlbum.ratingNumber = rating;
+    libraryAlbum.rating = getRatingStars(rating);
+    libraryAlbum.comment = comment;
+  }
+
+  function editAlbumCard(cardAsTarget, title, author, year, haveListened, rating, comment){
+    const card = cardAsTarget;
+    const cardTitle = card.querySelector('.album-title');
+    const cardAuthor = card.querySelector('.album-author');
+    const cardYear = card.querySelector('.album-year');
+    const cardHaveListened = card.querySelector('.listen-status-span');
+    const cardRating = card.querySelector('.album-rating');
+    const cardComment = card.querySelector('.album-comment');
+    cardTitle.textContent = title;
+    cardAuthor.textContent = author;
+    cardYear.textContent = year;
+    cardHaveListened.textContent = haveListened;
+    cardRating.textContent = getRatingStars(rating);
+    cardComment.textContent = comment;
+  }
+
+function saveCardEdit(cardAsTarget){
+    const title = document.querySelector("#album-title");
+    const author = document.querySelector("#album-author");
+    const year = document.querySelector("#album-year");
+    const haveListened = document.querySelector(".listen-icon");
+    const rating = document.querySelector('input[name="star-rating"]:checked');
+    const ratingValue = rating ? rating.value : "";
+    const comment = document.querySelector("#album-comment");
+    editAlbumInLibrary(cardAsTarget, title.value, author.value, year.value, haveListened.textContent, ratingValue, comment.value);
+    editAlbumCard(cardAsTarget, title.value, author.value, year.value, haveListened.textContent, ratingValue, comment.value);
+}
+let cardAsTarget;
+function getCardAsTarget(e){
+    return e.target.parentNode;
+}
+function openEditAlbumCard(e){
+    cardMode = "edit";
+    dialog.querySelector(".send-form").textContent="Save";
+    preloadInputs(e);
+    cardAsTarget = getCardAsTarget(e);
+    dialog.showModal();
 }
 
 function createAlbumCard(album, albumsContainer){
@@ -68,9 +171,22 @@ function createAlbumCard(album, albumsContainer){
     deleteAlbumBtn.textContent = symbols.cross;
     deleteAlbumBtn.onclick = deleteAlbumFromLibrary;
 
+    const albumTitle = document.createElement("span");
+    albumTitle.classList.add("album-title");
+    albumTitle.textContent = album.title;
+
+    const byText = document.createTextNode(" by ");
+
+    const albumAuthor = document.createElement("span");
+    albumAuthor.classList.add("album-author");
+    albumAuthor.textContent = album.author;
+
     const albumCredits = document.createElement("h2");
-    albumCredits.classList.add("album-title");
-    albumCredits.textContent = `"${album.title}" by ${album.author}`;
+    albumCredits.classList.add("album-credits");
+
+    albumCredits.appendChild(albumTitle);
+    albumCredits.appendChild(byText);
+    albumCredits.appendChild(albumAuthor);
 
     const year = document.createElement("p");
     year.classList.add("album-year");
@@ -100,11 +216,18 @@ function createAlbumCard(album, albumsContainer){
     comment.classList.add("album-comment");
     comment.textContent = `${album.comment}`;
     albumCard.appendChild(comment);
+
+    const editAlbumBtn = document.createElement("img");
+    editAlbumBtn.classList.add("edit-album");
+    editAlbumBtn.classList.add("btn");
+    editAlbumBtn.tabIndex = 0;
+    editAlbumBtn.src="./icons/edit.svg";
+    editAlbumBtn.onclick = openEditAlbumCard;
+    albumCard.appendChild(editAlbumBtn);
     
     // set meta for deletion and search
-    albumCard.dataset.title = album.title;
-    albumCard.dataset.author = album.author;
-    albumCard.dataset.year = album.year;
+    albumCard.dataset.id = album.id;
+    albumCard.dataset.listenedStatus = album.haveListened;
 
     albumsContainer.appendChild(albumCard);
     console.log(myLibrary)
@@ -112,7 +235,7 @@ function createAlbumCard(album, albumsContainer){
 }
 
 addAlbumToLibrary('...At This', 'Arc', 1971, symbols.tick, 5, "Cool riffs");
-addAlbumToLibrary('The Road', 'Quiet World', 1970, symbols.cross);
+addAlbumToLibrary('The Road', 'Quiet World', 1970, symbols.cross, "", "Tried, but wanna listen fully");
 
 function displayLibrary(){
     // console.log(myLibrary);
@@ -142,31 +265,34 @@ function sendFormData () {
 const dialog = document.querySelector(".dialog");
 const sendForm = document.querySelector(".send-form");
 
+// open dialog
 document.querySelector(".add-album").addEventListener("click", () => {
-    // show dialog
-    dialog.showModal();
-    // "Close" button closes the dialog
-    const dialogCloseBtn = document.querySelector(".close-dialog");
-    dialogCloseBtn.addEventListener("click", () => {
-        dialog.close();
-        const form = document.querySelector(".form");
-        form.reset();
-        listenStatusReset();
-    });
-    
+    cardMode = "add";
+    dialog.querySelector(".send-form").textContent="Add album";
+    dialog.showModal();   
 })
+
+ // "Close" button closes the dialog
+ const dialogCloseBtn = document.querySelector(".close-dialog");
+ dialogCloseBtn.addEventListener("click", () => {
+     dialog.close();
+     const form = document.querySelector(".form");
+     form.reset();
+     listenStatusReset();
+ });
 
 // close dialog on blur
 dialog.addEventListener('click', () => dialog.close());
-
 const dialogContent = document.querySelector('.dialog-content');
 dialogContent.addEventListener('click', (event) => event.stopPropagation());
 
 // send form data when form submit button clicked
 sendForm.addEventListener("click", (event) => {
     event.preventDefault();
-
-    sendFormData();
+    if (cardMode !== "add"){
+        saveCardEdit(cardAsTarget);
+    } else {
+    sendFormData() }
 
     // reset form
     const form = document.querySelector(".form");
@@ -183,7 +309,6 @@ function listenStatusReset(){
 const haveListened = document.querySelector(".listen-icon");
 haveListened.textContent= symbols.cross;
 }
-
 
 // max year of album in form
 document.addEventListener("DOMContentLoaded", () => {
@@ -207,7 +332,6 @@ document.querySelector(".listen-icon").addEventListener("click", (event) => {
 function enableRating(inputBox){
     const labels =[...inputBox.querySelectorAll("label")];
     const inputs =[...inputBox.querySelectorAll("input")]
-
 
         labels.forEach((e, index) => e.addEventListener("mouseover", (e)=>{
          for(let i=0;i<labels.length;i++){

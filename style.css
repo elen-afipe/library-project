@@ -97,4 +97,7 @@ dialog{
 .dialog-content{
     padding: 10px;
 }
-
+.edit-album{
+    height: 20px;
+    justify-self: right;
+}
