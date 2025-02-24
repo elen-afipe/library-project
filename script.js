@@ -171,6 +171,9 @@ function createAlbumCard(album, albumsContainer){
     deleteAlbumBtn.textContent = symbols.cross;
     deleteAlbumBtn.onclick = deleteAlbumFromLibrary;
 
+    const albumInfo = document.createElement("div");
+    albumInfo.classList.add("album-info-container");
+
     const albumTitle = document.createElement("span");
     albumTitle.classList.add("album-title");
     albumTitle.textContent = album.title;
@@ -202,24 +205,27 @@ function createAlbumCard(album, albumsContainer){
     listenStatusSpan.onclick = toggleListenedStatus;
 
     albumCard.appendChild(deleteAlbumBtn);
-    albumCard.appendChild(albumCredits);
-    albumCard.appendChild(year);
+    albumCard.appendChild(albumInfo);
+    albumInfo.appendChild(albumCredits);
+    albumInfo.appendChild(year);
     listenStatus.appendChild(listenStatusSpan);
-    albumCard.appendChild(listenStatus);
+    albumInfo.appendChild(listenStatus);
 
     const rating = document.createElement("p");
     rating.classList.add("album-rating");
     rating.textContent = `${album.rating}`;
-    albumCard.appendChild(rating);
+    albumInfo.appendChild(rating);
 
     const comment = document.createElement("p");
     comment.classList.add("album-comment");
     comment.textContent = `${album.comment}`;
-    albumCard.appendChild(comment);
+    albumInfo.appendChild(comment);
+    albumCard.appendChild(albumInfo);
 
     const editAlbumBtn = document.createElement("img");
     editAlbumBtn.classList.add("edit-album");
     editAlbumBtn.classList.add("btn");
+    editAlbumBtn.classList.add("svg");
     editAlbumBtn.tabIndex = 0;
     editAlbumBtn.src="./icons/edit.svg";
     editAlbumBtn.onclick = openEditAlbumCard;
@@ -235,11 +241,12 @@ function createAlbumCard(album, albumsContainer){
 }
 
 addAlbumToLibrary('...At This', 'Arc', 1971, symbols.tick, 5, "Cool riffs");
-addAlbumToLibrary('The Road', 'Quiet World', 1970, symbols.cross, "", "Tried, but wanna listen fully");
+addAlbumToLibrary('The Road', 'Quiet World', 1970, symbols.cross, "", "Tried once, but wanna relisten");
 
 addAlbumToLibrary('Exile on Main St.', 'The Rolling Stones', 1972, symbols.tick, 5, 'Classic');
 addAlbumToLibrary('Sticky Fingers', 'The Rolling Stones', 1971, symbols.tick, 5, 'Absolute banger');
-addAlbumToLibrary('Goats Head Soup', 'The Rolling Stones', 1973, symbols.cross, 5, 'Can listen to it forever');
+addAlbumToLibrary('Goats Head Soup', 'The Rolling Stones', 1973, symbols.tick, 5, 'Can listen to it forever');
+addAlbumToLibrary(`The Boy Bands Have Won, and All the Copyists and the Tribute Bands and the TV Talent Show Producers Have Won, If We Allow Our Culture to Be Shaped by Mimicry, Whether from Lack of Ideas or from Exaggerated Respect. You Should Never Try to Freeze Culture. What You Can Do Is Recycle That Culture. Take Your Older Brother's Hand-Me-Down Jacket and Re-Style It, Re-Fashion It to the Point Where It Becomes Your Own. But Don't Just Regurgitate Creative History, or Hold Art and Music and Literature as Fixed, Untouchable and Kept Under Glass. The People Who Try to 'Guard' Any Particular Form of Music Are, Like the Copyists and Manufactured Bands, Doing It the Worst Disservice, Because the Only Thing That You Can Do to Music That Will Damage It Is Not Change It, Not Make It Your Own. Because Then It Dies, Then It's Over, Then It's Done, and the Boy Bands Have Won`, 'Chumbawamba', 2008, symbols.cross, "", 'Wow, what a title!');
 
 
 function displayLibrary(){
@@ -340,14 +347,14 @@ function enableRating(inputBox){
 
         labels.forEach((e, index) => e.addEventListener("mouseover", (e)=>{
          for(let i=0;i<labels.length;i++){
-            labels[i].style.color = ((i <= index) ? "#391854" : "#888");
+            labels[i].style.color = ((i <= index) ? "#d4af37" : "#888");
         }
      }));
 
         labels.forEach((e, index) => e.addEventListener("mouseleave", (e)=>{
             const checkedIndex = inputs.findIndex(e => e.checked);
             for(let i=0;i<labels.length;i++){
-                labels[i].style.color = ((i <= checkedIndex) ? "#391854" : "#888");
+                labels[i].style.color = ((i <= checkedIndex) ? "#d4af37" : "#888");
             };
     }));
 }
@@ -398,3 +405,4 @@ function enableRating(inputBox){
     });
 
 // add input check
+// add photo by link to form

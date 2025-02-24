@@ -1,46 +1,267 @@
-.albums-container{
+/* reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+* {
+    font-size: 14px;
+    margin: 0;
+}
+
+body {
+    line-height: 1.25;
+    -webkit-font-smoothing: antialiased;
+    cursor: default;
+  }
+
+  img, svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input, button, a, textarea {
+    font: inherit;
+  }
+
+  p {
+    overflow-wrap: break-word;
+    text-wrap: pretty;
+  }
+
+  select {
+    appearance: none;
+  }
+
+  input:-webkit-autofill {
+    font-family: inherit;
+    border: none;
+    border-radius: .3rem;
+    caret-color: var(--black); 
+    color: var(--white);
+    background: var(--white);
+    -webkit-font-feature-settings: off;
+    -webkit-text-fill-color: var(--white); 
+    -webkit-background-clip: text; 
+    box-shadow: 0 0 0 50px var(var(--black-color)) inset; 
+    }
+    input, textarea{
+        outline: none;
+    }
+    /* remove arrows for number input with max value */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    margin: 0;
+}
+    /* disable textarea stretching */
+    textarea {
+        resize: none;
+    }
+    /* Hide scrollbars */
+   .album-card::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* style */
+  :root{
+    --black: black;
+    --black-accent: #131313;
+    --white-accent:hsl(0, 0%, 80%);
+    --white: hsl(0, 0%, 92%);
+    min-height: 100vh;
+    /* --lower-shadow: 0 0.4rem 0.2rem 0 rgba(0, 0, 0, 0.055);
+    --shadow: 0.4rem 0.4rem 0.2rem 0 rgba(0, 0, 0, 0.055); */
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .container{
+    background-color: var(--black);
+    min-height: 100vh;
+    color: var(--white-accent);
+  }
+
+/* header */
+  header{
+    display:flex;
+    gap:20px;
+    align-items: center;
+    color: var(--white);
+    /* border-bottom: 1px solid var(--black-accent); */
+    padding: 8px 20px 0px;
+}
+.logo{
+    height:60px;
+}
+.logo-text{
+    font-size: 1.5rem;
+}
+.logo-text:hover{
+    border-bottom: 1px solid var(--white);
+    font-size: 1.5rem;
+}
+
+/* main part */
+  .albums-container{
+    background-color: var(--black-accent);
+    padding: 15px 20px;
+    border-radius: 15px;
+    margin: 4px;
     display:flex;
     flex-wrap: wrap;
     gap: 10px;
-}
-.album-card{
+    min-height: 70vh;
+  }
+
+  .album-card{
     border: 5px solid black;
-    padding: 15px;
-    width: 200px;
+    padding: 10px;
+    width: 250px;
+    height: 250px;
+    border-radius: 15px;
+    background-color: var(--black);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 4px;
+    text-align: left;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .delete-album {
+    height: 20px;
+    align-self: flex-end;
+    visibility: hidden;
+    }
+
+.album-info-container{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: start;
+}
+
+  .album-credits, .album-credits > span {
+    line-height: 1.5;
+    color: var(--white);
+    font-size: 1.2rem;
+    padding-bottom: 5px;
+  }
+
+ .album-rating{
+    color: var(--white);
+}
+
+.edit-album{
+    height: 20px;
+    visibility: hidden;
+    align-self: flex-end;
+}
+
+/* filters and add */
+.filters-container{
+    padding: 15px 20px;
+    padding-bottom: 5px;
+    display: flex;
+    gap: 10px;
+}
+/* add filter svg to select */
+.select-container {
+    position: relative;
+  } 
+  .select-container::after {
+    content: '';
+    background: url('./icons/filter-white.svg') no-repeat center center;
+    background-size: contain;
+    width: 15px; 
+    height: 15px; 
+    font-size: 1rem;
+    top:6px;
+    left: 80px;
+    position: absolute;
+  }
+ select{
+    width: 100px;
+    font-size: 0.8rem;
+    background-color: var(--black-accent);
+    color: var(--white);
+    padding: 5px;
+    border-radius: 10px;
+ }
+
+.add-album{
+    padding-left: 15px; 
+    padding-bottom: 5px;
+}
+
+/* states and interactive elements */
+.album-card:hover .edit-album, 
+.album-card:hover .delete-album{
+    visibility: visible;
+  }
+
+
+  img.svg{
+    filter: invert(1);
+    mix-blend-mode: difference;
+  }
+.btn.add-album, .btn.close-dialog{
+    height: 40px;
 }
 .btn{
-    height: 50px;
     outline: none;
 }
-.btn:hover{
+.btn:hover, select{
     cursor: pointer;
     transform: translateY(1px);
 }
 .btn:active{
     transform: translateY(-1px);
 }
-.delete-album {
-    height: 10px;
-    justify-self: right;
-    }
+/* dialog */
 ::backdrop {
-    background-image: linear-gradient(
-      45deg,
-      magenta,
-      rebeccapurple,
-      dodgerblue,
-      green
-    );
-    opacity: 0.75;
+    background-color:rgba(0,0,0,0.5);
   }
-.close-dialog{
-    justify-self: left;
+  dialog{
+    background-color: var(--black-accent);
+    color: var(--white-accent);
+    border-radius: 15px;
+    border:none;
+  }
+  .dialog-content{
+    padding: 20px;
+  }
+  .form-row:not(.exclude){
+    display: flex;
+    gap: 5px;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
+.close-dialog.btn{
+    justify-self: right;
+    padding-bottom: 8px;
 }
 form{
     display: flex;
     flex-direction: column;
     gap: 10px;
     align-items: baseline;
+}
+input{
+    padding: 5px;
+}
+.listen-icon{
+    font-size: 1.1rem;
+}
+.send-form{
+    border-radius: 15px;
+    border: 2px solid var(--white);
+    padding: 5px 15px;
+    align-self: flex-end;
+    background-color: var(--black-accent);
+    color: var(--white-accent);
+    margin-top: 8px;
 }
 
 .listen-icon:hover, .listen-icon:focus, .listen-status-span{
@@ -93,11 +314,6 @@ form{
 }
 dialog{
     padding: 0;
-}
-.dialog-content{
-    padding: 10px;
-}
-.edit-album{
-    height: 20px;
-    justify-self: right;
+    align-self: center;
+    justify-self:center;
 }
