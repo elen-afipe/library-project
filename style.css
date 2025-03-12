@@ -62,7 +62,10 @@ body {
    .album-card::-webkit-scrollbar {
     display: none;
   }
-
+  /* Disable copying buttons */
+  .btn, .listen-icon, .listen-status-span{
+  user-select: none;
+  }
   /* style */
   :root{
     --black: black;

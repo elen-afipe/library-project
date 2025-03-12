@@ -1,17 +1,20 @@
 const myLibrary = [];
 let cardMode = "add";
+let cardAsTarget;
 
-    const symbols = {
+const symbols = {
         cross: "✕",
         tick: "✓",
         star: '★',
         blankStar:"☆",
     }
+
 function getRatingStars(rating){
     if (rating >= 1 && rating <= 5) {
         return (symbols.star.repeat(rating));
     } else return symbols.blankStar.repeat(5);
 }
+
 function toggleListenedStatus(e){
    const status = e.target;
    const div = e.target.parentNode;
@@ -33,7 +36,8 @@ function generateAlbumId(){
     return currentId;
 }
 
-function Album(title, author, year, haveListened, rating, comment) {
+class Album {
+    constructor(title, author, year, haveListened, rating, comment){
     this.title = title;
     this.author = author;
     this.year = year;
@@ -43,6 +47,7 @@ function Album(title, author, year, haveListened, rating, comment) {
     this.comment = comment;
     this.dataDisplayed = false;
     this.id = generateAlbumId();
+    }
 }
 
 function addAlbumToLibrary(title, author, year, haveListened, rating, comment) {
@@ -146,7 +151,7 @@ function saveCardEdit(cardAsTarget){
     editAlbumInLibrary(cardAsTarget, title.value, author.value, year.value, haveListened.textContent, ratingValue, comment.value);
     editAlbumCard(cardAsTarget, title.value, author.value, year.value, haveListened.textContent, ratingValue, comment.value);
 }
-let cardAsTarget;
+
 function getCardAsTarget(e){
     return e.target.parentNode;
 }
