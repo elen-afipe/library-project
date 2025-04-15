@@ -35,14 +35,16 @@ body {
   input:-webkit-autofill {
     font-family: inherit;
     border: none;
-    border-radius: .3rem;
-    caret-color: var(--black); 
-    color: var(--white);
-    background: var(--white);
+    border-radius: 2px;
+    font-size: inherit;
+    caret-color: var(--white); 
+    color: var(--black);
+    background-color: var(--white);
     -webkit-font-feature-settings: off;
-    -webkit-text-fill-color: var(--white); 
+    -webkit-text-fill-color: var(--black); 
     -webkit-background-clip: text; 
-    box-shadow: 0 0 0 50px var(var(--black-color)) inset; 
+    box-shadow: 0 0 0px 1000px var(--white) inset; 
+    -webkit-box-shadow: 0 0 0px 1000px var(--white) inset !important;
     }
     input, textarea{
         outline: none;
@@ -236,11 +238,29 @@ body {
   }
   .form-row:not(.exclude){
     display: flex;
+    flex-direction: column;
+    gap: 1px;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .form-row.noerror{
+    margin-bottom: 1.1rem;
+  }
+  .form-input{
+    display: flex;
     gap: 5px;
     justify-content: space-between;
     width: 100%;
     align-items: center;
+    margin-bottom: 3px;
   }
+  .form-row:last-of-type .form-input{
+    align-items: flex-start;
+  }
+  textarea::-webkit-scrollbar {
+    width: 0; 
+    background: transparent; 
+}
 .close-dialog.btn{
     justify-self: right;
     padding-bottom: 8px;
@@ -248,11 +268,22 @@ body {
 form{
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
     align-items: baseline;
 }
 input{
     padding: 5px;
+}
+input, textarea{
+  width: 75%;
+  background-color: var(--white);
+  color: var(--black);
+  border-radius: 2px;
+  outline: none;
+  border: none;
+}
+textarea{
+  min-height: 150px;
 }
 .listen-icon{
     font-size: 1.1rem;
@@ -271,6 +302,12 @@ input{
     cursor: pointer;
 }
 
+.error{
+  align-self: end;
+  font-size: 0.8rem;
+  min-height: 1.1rem;
+  color: rgb(255, 55, 0);
+}
 /* rating */
 .rating-box {
     display: flex;

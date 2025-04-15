@@ -43,41 +43,56 @@
         <dialog class="dialog">
             <div class="dialog-content">
                 <img src="./icons/cancel.svg" alt="" class="close-dialog btn svg" tabindex=0>
-                <form class="form">
+                <form class="form" novalidate>
                     <div class="form-row">
-                    <label for="album-title">Title: </label>
-                    <input id="album-title" name="album-title" type="text" required="">
+                    <div class="form-input">
+                        <label for="album-title">Title: </label>
+                        <input id="album-title" name="album-title" type="text" required="">
+                    </div>
+                    <span class="error title"></span>
                 </div>
                 <div class="form-row">
-                    <label for="album-author">Author: </label>
-                    <input id="album-author" name="album-author" type="text" required="">
+                    <div class="form-input">
+                        <label for="album-author">Author: </label>
+                        <input id="album-author" name="album-author" type="text" required="">
+                    </div>
+                    <span class="error author"></span>
                 </div>
                 <div class="form-row">
-                    <label for="album-year">Year: </label>
-                    <input id="album-year" name="album-year" type="number" required="" minlength="4" maxlength="4">
+                    <div class="form-input">
+                        <label for="album-year">Year: </label>
+                        <input id="album-year" name="album-year" type="number" required="" min="1000">
+                    </div>
+                    <span class="error year"></span>
                 </div>
-                <div class="form-row exclude">
-                    <label for="listen-status">Listened: </label>
-                    <span name="listen-status" class="listen-icon false" tabindex=0>✕</span>
-                </div>
-                <div class="form-row rating-box">
-                    <div>Rate the album:</div>
-                    <div class="rating-inputs" tabindex=0>
-                        <label for="star-1"></label>
-                        <label for="star-2"></label>
-                        <label for="star-3"></label>
-                        <label for="star-4"></label>
-                        <label for="star-5"></label>
-                        <input type="radio" name="star-rating" id="star-1" value="1">
-                        <input type="radio" name="star-rating" id="star-2" value="2">
-                        <input type="radio" name="star-rating" id="star-3" value="3">
-                        <input type="radio" name="star-rating" id="star-4" value="4">
-                        <input type="radio" name="star-rating" id="star-5" value="5">
+                <div class="form-row exclude noerror">
+                    <div class="form-input">
+                        <label for="listen-status">Listened: </label>
+                        <span name="listen-status" class="listen-icon false" tabindex=0>✕</span>
                     </div>
                 </div>
-                <div class="form-row">
-                    <label for="album-comment">Thoughts: </label>
-                   <textarea name="album-comment" id="album-comment"></textarea>
+                <div class="form-row rating-box noerror">
+                    <div class="form-input">
+                        <div>Rate the album:</div>
+                        <div class="rating-inputs" tabindex=0>
+                            <label for="star-1"></label>
+                            <label for="star-2"></label>
+                            <label for="star-3"></label>
+                            <label for="star-4"></label>
+                            <label for="star-5"></label>
+                            <input type="radio" name="star-rating" id="star-1" value="1">
+                            <input type="radio" name="star-rating" id="star-2" value="2">
+                            <input type="radio" name="star-rating" id="star-3" value="3">
+                            <input type="radio" name="star-rating" id="star-4" value="4">
+                            <input type="radio" name="star-rating" id="star-5" value="5">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row noerror">
+                    <div class="form-input">
+                        <label for="album-comment">Thoughts: </label>
+                        <textarea name="album-comment" id="album-comment"></textarea>
+                    </div>
                 </div>
                 <button class="btn send-form" type="submit">Add album</button>
                 </form>

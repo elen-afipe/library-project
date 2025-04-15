@@ -157,6 +157,7 @@ function getCardAsTarget(e){
 }
 function openEditAlbumCard(e){
     cardMode = "edit";
+    removeErrorStyle();
     dialog.querySelector(".send-form").textContent="Save";
     preloadInputs(e);
     cardAsTarget = getCardAsTarget(e);
@@ -285,6 +286,9 @@ const sendForm = document.querySelector(".send-form");
 // open dialog
 document.querySelector(".add-album").addEventListener("click", () => {
     cardMode = "add";
+    removeErrorStyle();
+    form.reset();
+    listenStatusReset();
     dialog.querySelector(".send-form").textContent="Add album";
     dialog.showModal();   
 })
@@ -292,8 +296,8 @@ document.querySelector(".add-album").addEventListener("click", () => {
  // "Close" button closes the dialog
  const dialogCloseBtn = document.querySelector(".close-dialog");
  dialogCloseBtn.addEventListener("click", () => {
+    removeErrorStyle();
      dialog.close();
-     const form = document.querySelector(".form");
      form.reset();
      listenStatusReset();
  });
@@ -303,23 +307,6 @@ dialog.addEventListener('click', () => dialog.close());
 const dialogContent = document.querySelector('.dialog-content');
 dialogContent.addEventListener('click', (event) => event.stopPropagation());
 
-// send form data when form submit button clicked
-sendForm.addEventListener("click", (event) => {
-    event.preventDefault();
-    if (cardMode !== "add"){
-        saveCardEdit(cardAsTarget);
-    } else {
-    sendFormData() }
-
-    // reset form
-    const form = document.querySelector(".form");
-    form.reset();
-    listenStatusReset();
-
-    dialog.close();
-    displayLibrary();
-});
-
 
 // listened reset for form
 function listenStatusReset(){
@@ -327,9 +314,9 @@ const haveListened = document.querySelector(".listen-icon");
 haveListened.textContent= symbols.cross;
 }
 
+const currentYear = new Date().getFullYear();
 // max year of album in form
 document.addEventListener("DOMContentLoaded", () => {
-    const currentYear = new Date().getFullYear();
     const albumYearInput = document.getElementById("album-year");
     albumYearInput.setAttribute("max", currentYear);
 });
@@ -409,5 +396,109 @@ function enableRating(inputBox){
         sortLibrary(selectedValue);
     });
 
-// add input check
-// add photo by link to form
+   
+ const form = document.querySelector(".form");
+ const titleInput = document.getElementById("album-title");
+ const titleError = document.querySelector(".error.title");
+ const authorInput = document.getElementById("album-author");
+ const authorError = document.querySelector(".error.author");
+ const yearInput = document.getElementById("album-year");
+ const yearError = document.querySelector(".error.year");
+
+ titleInput.addEventListener("input", (event) => {
+    if (titleInput.validity.valid & titleInput.value.trim() !== "") {
+      titleError.textContent = ""; 
+      titleError.classList.remove("active"); 
+    } else {
+      showError();
+    }
+  });
+
+  authorInput.addEventListener("input", (event) => {
+    if (authorInput.validity.valid & authorInput.value.trim() !== "") {
+      authorError.textContent = ""; 
+      authorError.classList.remove("active"); 
+    } else {
+      showError();
+    }
+  });
+
+  yearInput.addEventListener("input", (event) => {
+    if (yearInput.validity.valid) {
+      yearError.textContent = ""; 
+      yearError.classList.remove("active"); 
+    } else {
+      showError();
+    }
+  });
+
+  function showTitleError() {
+    if (titleInput.validity.valueMissing | titleInput.value.trim() === "") {
+      titleError.textContent = "Fill the title of the album";
+      titleError.classList.add("active")
+    } 
+}
+function showAuthorError(){
+    if (authorInput.validity.valueMissing | authorInput.value.trim() === ""){
+        authorError.textContent = "Fill the name of the artist";
+        authorError.classList.add("active")
+    } 
+}
+  function showYearError() {
+    if (yearInput.validity.valueMissing){
+        yearError.textContent = "Fill the year of the album as number";
+        yearError.classList.add("active");
+    }  else if (yearInput.validity.typeMismatch) {
+      yearError.textContent = "Oh, come on! Year should be a number!";
+      yearError.classList.add("active");
+    } else if (yearInput.validity.rangeUnderflow) {
+        yearError.textContent = `Year should have at least 4 numbers`;
+        yearError.classList.add("active");
+      } else if (yearInput.validity.rangeOverflow) {
+        yearError.textContent = `Come on! You haven't listen it yet. It's ${currentYear}!`;
+        yearError.classList.add("active");
+      }
+  }
+
+  function showError(){
+    showTitleError();
+    showAuthorError();
+    showYearError();
+  }
+
+  function removeErrorStyle(){
+    titleError.classList.remove("active"); 
+    authorError.classList.remove("active"); 
+    yearError.classList.remove("active"); 
+    titleError.textContent=""; 
+    authorError.textContent=""; 
+    yearError.textContent=""; 
+  }
+
+
+  function checkFormValidity(){
+    if (!titleInput.validity.valid | !authorInput.validity.valid | !yearInput.validity.valid | titleInput.value.trim() === "" | authorInput.value.trim() === "") {
+        showError();
+        return false;
+      } 
+      else return true;
+  }
+  
+sendForm.addEventListener("click", (event) => {
+    event.preventDefault();
+    const formIsValid = checkFormValidity();
+    if(formIsValid){
+        // send form data when inputs are valid
+        if (cardMode !== "add"){
+            saveCardEdit(cardAsTarget);
+        } else {
+        sendFormData() }
+        // reset form
+        form.reset();
+        listenStatusReset();
+
+        dialog.close();
+        displayLibrary();
+    } 
+});
+
