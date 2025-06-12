@@ -1,103 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Library</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="./script.js" defer=""></script>
-</head>
-    <body>
-      <div class="container">
-        <header>
-            <img class="logo svg" src="./icons/album.svg" alt="" srcset="">
-            <h1 class="logo-text">My library</h1>
-        </header>
-        <div class="albums-container"></div>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <img class="logo svg" src="./icons/album.svg" alt="" srcset="" />
+        <h1 class="logo-text">My library</h1>
+      </header>
+      <div class="albums-container"></div>
+      <footer class="footer">
         <div class="filters-container">
-            <div class="select-container">
-                <select name="author-selection">
-                    <option value="">Author</option>
-                    <option value="author-asc">Author (A-Z)</option>
-                    <option value="author-desc">Author (Z-A)</option>
-                  </select>
-            </div>
-            <div class="select-container">
+          <div class="select-container">
+            <select name="author-selection">
+              <option value="">Author</option>
+              <option value="author-asc">Author (A-Z)</option>
+              <option value="author-desc">Author (Z-A)</option>
+            </select>
+          </div>
+          <div class="select-container">
             <select name="year-selection">
-                <option value="">Year</option>
-                <option value="year-asc">Year (newest)</option>
-                <option value="year-desc">Year (oldest)</option>
-              </select>
-            </div>
-            <div class="select-container">
-              <select name="listen-selection">
-                <option value="">Listen</option>
-                <option value="listen-asc">Listen (✓)</option>
-                <option value="listen-desc">Listen (✕)</option>
-              </select>
-            </div>
+              <option value="">Year</option>
+              <option value="year-asc">Year (newest)</option>
+              <option value="year-desc">Year (oldest)</option>
+            </select>
+          </div>
+          <div class="select-container">
+            <select name="listen-selection">
+              <option value="">Listen</option>
+              <option value="listen-asc">Listen (✓)</option>
+              <option value="listen-desc">Listen (✕)</option>
+            </select>
+          </div>
         </div>
-        <img class ="btn add-album svg" tabindex=0 src="./icons/plus.svg" alt="">
-        <!-- <svg class="btn add-album" tabindex=0 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> -->
-    
-        <dialog class="dialog">
-            <div class="dialog-content">
-                <img src="./icons/cancel.svg" alt="" class="close-dialog btn svg" tabindex=0>
-                <form class="form" novalidate>
-                    <div class="form-row">
-                    <div class="form-input">
-                        <label for="album-title">Title: </label>
-                        <input id="album-title" name="album-title" type="text" required="">
-                    </div>
-                    <span class="error title"></span>
-                </div>
-                <div class="form-row">
-                    <div class="form-input">
-                        <label for="album-author">Author: </label>
-                        <input id="album-author" name="album-author" type="text" required="">
-                    </div>
-                    <span class="error author"></span>
-                </div>
-                <div class="form-row">
-                    <div class="form-input">
-                        <label for="album-year">Year: </label>
-                        <input id="album-year" name="album-year" type="number" required="" min="1000">
-                    </div>
-                    <span class="error year"></span>
-                </div>
-                <div class="form-row exclude noerror">
-                    <div class="form-input">
-                        <label for="listen-status">Listened: </label>
-                        <span name="listen-status" class="listen-icon false" tabindex=0>✕</span>
-                    </div>
-                </div>
-                <div class="form-row rating-box noerror">
-                    <div class="form-input">
-                        <div>Rate the album:</div>
-                        <div class="rating-inputs" tabindex=0>
-                            <label for="star-1"></label>
-                            <label for="star-2"></label>
-                            <label for="star-3"></label>
-                            <label for="star-4"></label>
-                            <label for="star-5"></label>
-                            <input type="radio" name="star-rating" id="star-1" value="1">
-                            <input type="radio" name="star-rating" id="star-2" value="2">
-                            <input type="radio" name="star-rating" id="star-3" value="3">
-                            <input type="radio" name="star-rating" id="star-4" value="4">
-                            <input type="radio" name="star-rating" id="star-5" value="5">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-row noerror">
-                    <div class="form-input">
-                        <label for="album-comment">Thoughts: </label>
-                        <textarea name="album-comment" id="album-comment"></textarea>
-                    </div>
-                </div>
-                <button class="btn send-form" type="submit">Add album</button>
-                </form>
+        <img
+          class="btn add-album svg"
+          tabindex="0"
+          src="./icons/plus.svg"
+          alt=""
+        />
+      </footer>
+      <!-- <svg class="btn add-album" tabindex=0 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> -->
+
+      <dialog class="dialog">
+        <div class="dialog-content">
+          <img
+            src="./icons/cancel.svg"
+            alt=""
+            class="close-dialog btn svg"
+            tabindex="0"
+          />
+          <form class="form" novalidate>
+            <div class="form-row">
+              <div class="form-input">
+                <label for="album-title">Title: </label>
+                <input
+                  id="album-title"
+                  name="album-title"
+                  type="text"
+                  required=""
+                />
+              </div>
+              <span class="error title"></span>
             </div>
-        </dialog>
-      </div>
-    </body>
+            <div class="form-row">
+              <div class="form-input">
+                <label for="album-author">Author: </label>
+                <input
+                  id="album-author"
+                  name="album-author"
+                  type="text"
+                  required=""
+                />
+              </div>
+              <span class="error author"></span>
+            </div>
+            <div class="form-row">
+              <div class="form-input">
+                <label for="album-year">Year: </label>
+                <input
+                  id="album-year"
+                  name="album-year"
+                  type="number"
+                  required=""
+                  min="1000"
+                />
+              </div>
+              <span class="error year"></span>
+            </div>
+            <div class="form-row exclude noerror">
+              <div class="form-input">
+                <label>Listened: </label>
+                <span
+                  name="listen-status"
+                  class="listen-icon false"
+                  tabindex="0"
+                  >✕</span
+                >
+              </div>
+            </div>
+            <div class="form-row rating-box noerror">
+              <div class="form-input">
+                <div>Rate the album:</div>
+                <div class="rating-inputs" tabindex="0">
+                  <label for="star-1"></label>
+                  <label for="star-2"></label>
+                  <label for="star-3"></label>
+                  <label for="star-4"></label>
+                  <label for="star-5"></label>
+                  <input
+                    type="radio"
+                    name="star-rating"
+                    id="star-1"
+                    value="1"
+                  />
+                  <input
+                    type="radio"
+                    name="star-rating"
+                    id="star-2"
+                    value="2"
+                  />
+                  <input
+                    type="radio"
+                    name="star-rating"
+                    id="star-3"
+                    value="3"
+                  />
+                  <input
+                    type="radio"
+                    name="star-rating"
+                    id="star-4"
+                    value="4"
+                  />
+                  <input
+                    type="radio"
+                    name="star-rating"
+                    id="star-5"
+                    value="5"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-row noerror">
+              <div class="form-input">
+                <label for="album-comment">Thoughts: </label>
+                <textarea name="album-comment" id="album-comment"></textarea>
+              </div>
+            </div>
+            <button class="btn send-form" type="submit">Add album</button>
+          </form>
+        </div>
+      </dialog>
+    </div>
+  </body>
 </html>
